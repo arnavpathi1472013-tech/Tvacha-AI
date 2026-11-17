@@ -4,7 +4,7 @@ const show = id => { document.querySelectorAll('.screen').forEach(s => s.hidden 
 document.addEventListener('click', e => { const t = e.target.closest('[data-go]'); if (t && !t.disabled) show(t.dataset.go); });
 const el = (tag, text, cls) => { const n = document.createElement(tag); if (text) n.textContent = text; if (cls) n.className = cls; return n; }; // textContent only: no HTML injection
 const sync = () => { $('#status').hidden = navigator.onLine; };
-addEventListener('online', sync); addEventListener('offline', sync); sync();
+addEventListener('online', () => { sync(); if (!$('#offline').hidden) show('home'); }); addEventListener('offline', sync); sync();
 
 // --- Step 1: image ---
 $('#bCam').onclick = () => $('#cam').click(); $('#bGal').onclick = () => $('#gal').click();
@@ -48,7 +48,7 @@ function emergency(hits, ctx) {
 
 // --- Step 3: analysis ---
 async function analyse(ctx) {
-  if (!navigator.onLine) { $('#reportBody').replaceChildren(el('div', 'Live AI analysis requires internet. Please reconnect and try again.', 'card banner')); return show('report'); }
+  if (!navigator.onLine) return show('offline');
   show('loading'); const stages = ['Examining image quality…', 'Analysing visible characteristics…', 'Considering supplied symptoms…', 'Preparing the assessment…'];
   let i = 0; const t = setInterval(() => $('#stage').textContent = stages[++i % 4], 4000);
   const ac = new AbortController(), to = setTimeout(() => ac.abort(), 50000);
@@ -80,7 +80,10 @@ function render({ mode, report: r }) {
 (async () => {
   try { await Safety.load(); const d = await (await fetch('/data/conditions.json')).json();
     d.conditions.forEach(c => $('#libBody').append(sec(c.name, el('p', c.description), el('p', 'Looks like: ' + c.visual), el('p', 'Distinguishing: ' + c.distinguishing), el('p', 'Warning signs: ' + c.warning_signs), el('small', 'Review status: ' + c.review_status))));
+    const g = await (await fetch('/data/skincare-guidelines.json')).json();
+    g.guidelines.forEach(x => $('#libBody').append(sec(x.title, list(x.points), el('small', 'Review status: ' + x.review_status))));
+    Safety.signs.emergency.forEach(x => $('#offlineSigns').append(el('li', x.label)));
   } catch { $('#libBody').textContent = 'Library unavailable.'; }
 })();
-setTimeout(() => !$('#splash').hidden && show('home'), 2000);
+setTimeout(() => !$('#splash').hidden && show(navigator.onLine ? 'home' : 'offline'), 2000);
 if ('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js');
