@@ -1,17 +1,21 @@
-TVACHA AI (त्वचा.ai)
-Educational skin-concern PWA. Not a diagnosis tool. Knowledge-base content is unreviewed by any dermatologist.
+# TVACHA AI (त्वचा.ai)
+Educational skin-concern PWA. Not a diagnosis tool. Knowledge-base content is **unreviewed** by any dermatologist.
 
-Run locally
-npm i -g wrangler · copy .dev.vars.example to .dev.vars and add a key (free Gemini key works with the defaults)
-wrangler dev → open the printed localhost URL. No key = clearly labelled DEMO mode (sample data, not real analysis).
-Deploy (free)
-wrangler login · wrangler secret put AI_API_KEY · wrangler deploy. One Worker serves the frontend and /api/analyze over HTTPS.
+## Run locally
+1. `npm i -g wrangler` · copy `.dev.vars.example` to `.dev.vars` and add a key (free Gemini key works with the defaults)
+2. `wrangler dev` → open the printed localhost URL.
+No key = clearly labelled DEMO mode (sample data, not real analysis).
 
-Android
-Open the deployed URL in Chrome → menu → Install app. For an APK, use Bubblewrap/PWABuilder (needs 192/512 PNG icons made from icon.svg).
+## Deploy (free)
+`wrangler login` · `wrangler secret put AI_API_KEY` · `wrangler deploy`. One Worker serves the frontend and `/api/analyze` over HTTPS.
 
-Test
+## Android
+Open the deployed URL in Chrome → menu → Install app. For an APK, use Bubblewrap/PWABuilder (needs 192/512 PNG icons made from `icon.svg`).
+
+## Test
 Online with key: upload a clear skin photo → report. Airplane mode: app opens, library/questionnaire work, analysis shows an offline message. Tick "Difficulty breathing" → emergency screen appears before any AI call.
 
-Status
-Functional: UI flow, image checks, safety screening, offline shell, library, Worker + provider modules (need testing with your key). Needs config: AI_API_KEY. Demo-only: no-key sample report. Not built yet: skincare-guidelines.json, dedicated offline fallback screen (an offline banner and message are used instead), PNG icons, automated tests, consent persistence.
+## Status
+Functional: UI flow, image checks, safety screening, offline shell, library, Worker + provider modules (need testing with your key).
+Needs config: AI_API_KEY. Demo-only: no-key sample report.
+Not built yet: skincare-guidelines.json, dedicated offline fallback screen (an offline banner and message are used instead), PNG icons, automated tests, consent persistence.
