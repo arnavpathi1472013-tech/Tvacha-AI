@@ -16,6 +16,9 @@ Open the deployed URL in Chrome → menu → Install app. For an APK, use Bubble
 Online with key: upload a clear skin photo → report. Airplane mode: app opens, library/questionnaire work, analysis shows an offline message. Tick "Difficulty breathing" → emergency screen appears before any AI call.
 
 ## Status
-Functional: UI flow, image checks, safety screening, offline shell, library, Worker + provider modules (need testing with your key).
+Functional: offline screen, skincare guidelines (unreviewed), UI flow, image checks, safety screening, offline shell, library, Worker + provider modules (need testing with your key).
 Needs config: AI_API_KEY. Demo-only: no-key sample report.
-Not built yet: skincare-guidelines.json, dedicated offline fallback screen (an offline banner and message are used instead), PNG icons, automated tests, consent persistence.
+Not built: PNG icons (see manifest note), consent persistence (intentionally omitted).
+
+## Automated tests
+`npm test` (Node 18+): safety screening, AI-response validation, Worker request validation.
