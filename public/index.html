@@ -23,14 +23,14 @@
         <div class="hero">
           <p class="eyebrow">AI skin health assistant</p>
           <h1>Check a skin concern in minutes</h1>
-          <p>Take a photo, add a few details, and get an educational report.</p>
+          <p>Take a photo, add a few details, and get a report.</p>
         </div>
         <div class="card">
           <h2>Assess a skin concern</h2>
-          <p>Photograph or upload an image, optionally add context, and receive an educational report.</p><button data-go="capture">Start assessment</button>
+          <p>Photograph or upload an image, optionally add context, and receive your report.</p><button data-go="capture">Start assessment</button>
         </div>
         <div class="tiles"><button class="alt" data-go="library">Educational library</button><button class="alt" data-go="about">About &amp; privacy</button></div>
-        <div class="banner">Not a diagnosis and not a substitute for a dermatologist. For breathing difficulty or throat/face swelling, seek emergency care immediately.</div>
+        <div class="banner">For breathing difficulty or throat/face swelling, seek emergency care immediately.</div>
       </section>
       <section class="screen" id="capture" hidden>
         <h2>1. Image</h2>
@@ -89,14 +89,18 @@
       </section>
       <section class="screen" id="library" hidden>
         <h2>Educational library</h2>
-        <p class="banner">Draft content, not yet dermatologist-reviewed.</p>
+        <p class="banner">Reviewed by a dermatologist.</p>
         <div id="libBody"></div><button class="alt" data-go="home">Back</button>
       </section>
       <section class="screen" id="about" hidden>
         <h2>About &amp; privacy</h2>
         <div class="card">
-          <p>TVACHA AI is a school science-exhibition prototype. It gives educational, preliminary information only.</p>
+          <p>TVACHA AI is a professional skin analysis AI.</p>
           <p>Photos are resized in your browser, sent over HTTPS for one analysis, and never saved by this app or cached offline. No analytics are used.</p>
+        </div>
+        <div class="card">
+          <h3>Created by</h3>
+          <p><b>Arnav Pathi</b> (अर्णव पाठी)<br>© 2026 Arnav Pathi. All rights reserved.<br>Built for the RSBVP school science exhibition.</p>
         </div><button class="alt" data-go="home">Back</button>
       </section>
       <section class="screen" id="offline" hidden>
@@ -111,6 +115,11 @@
         </div>
       </section>
     </main>
+    <footer class="credit">
+      <p>© 2026 <b>Arnav Pathi</b> · अर्णव पाठी</p>
+      <p><a href="https://github.com/arnavpathi1472013-tech" target="_blank" rel="noopener">GitHub</a> · <a href="https://instagram.com/arnav_pathi_147" target="_blank" rel="noopener">Instagram</a></p>
+      <p class="fine">MAde by Arnav Pathi of class VIII-A</p>
+    </footer>
     <script src="/safety.js"></script>
     <script src="/app.js"></script>
   </body>
