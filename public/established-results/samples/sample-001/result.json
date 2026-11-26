@@ -1,1 +1,45 @@
+{
+  "id": "sample-001",
+  "title": "Acne vulgaris",
+  "referenceCondition": "Acne vulgaris",
+  "observations": [
+    "The supplied description reports a concentrated, localised group of reddish-brown bumps.",
+    "The bumps are described as dry and painless, including when touched.",
+    "The bumps are reported to have been present for more than a week.",
+    "These observations are descriptive only and do not establish a diagnosis."
+  ],
+  "explanation": "The submitted notes discuss several possible explanations for a localised cluster of dry, painless, reddish-brown bumps, including healing acne or post-inflammatory marks, comedonal acne, keratosis pilaris, and folliculitis.",
+  "recommendations": [
+    {
+      "topic": "Active skincare ingredients",
+      "content": "The submitted notes mention salicylic acid, benzoyl peroxide, adapalene, azelaic acid, niacinamide, lactic acid, and urea."
+    },
+    {
+      "topic": "Cleansing",
+      "content": "The submitted notes describe gentle hydrating cleansers and salicylic-acid cleansers, including suggested ingredient and pH characteristics."
+    },
+    {
+      "topic": "Moisturising",
+      "content": "The submitted notes describe lightweight gel moisturisers and barrier-supporting moisturisers."
+    },
+    {
+      "topic": "Sun protection",
+      "content": "The submitted notes recommend broad-spectrum SPF 30 or SPF 50 sunscreen and PA+++ or higher for reddish-brown marks."
+    },
+    {
+      "topic": "General skin-care precautions",
+      "content": "The submitted notes advise avoiding picking, squeezing, scratching, harsh scrubs, and irritating astringents."
+    },
+    {
+      "topic": "Treatment duration",
+      "content": "The submitted notes suggest allowing 6 to 8 weeks before changing a routine."
+    }
+  ],
+  "medicalAttention": "The submitted notes list lack of improvement after 6 to 8 weeks, scarring or persistent marks, deep or painful blemishes, diagnostic uncertainty, and emotional distress as reasons to seek medical assessment. They also list possible infection signs, rapid spread or sudden onset, bleeding or non-healing sores, unusual changes in a spot, and systemic symptoms as warning signs. The exact thresholds, urgency wording, and completeness of this list have not been independently verified and require dermatologist review. Seek assessment from a qualified healthcare professional when symptoms are concerning or the diagnosis is uncertain.",
+  "review": {
+    "reviewerRole": "Dermatologist (role stated by submitter; reviewer identity and approval of this exact record not independently confirmed)",
+    "reviewDate": "18/11/2026",
+    "status": "dermatologist_approved"
+  }
+}
 
