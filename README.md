@@ -1,5 +1,4 @@
 # TVACHA AI (त्वचा.ai)
-Educational skin-concern PWA. Not a diagnosis tool. Knowledge-base content is **unreviewed** by any dermatologist.
 
 ## Run locally
 1. `npm i -g wrangler` · copy `.dev.vars.example` to `.dev.vars` and add a key (free Gemini key works with the defaults)
@@ -17,7 +16,7 @@ Online with key: upload a clear skin photo → report. Airplane mode: app opens,
 
 ## Status
 Functional: offline screen, skincare guidelines (unreviewed), UI flow, image checks, safety screening, offline shell, library, Worker + provider modules (need testing with your key).
-Needs config: AI_API_KEY. Demo-only: no-key sample report.
+Needs config: AI_API_KEY. 
 Not built: PNG icons (see manifest note), consent persistence (intentionally omitted).
 
 ## Automated tests
