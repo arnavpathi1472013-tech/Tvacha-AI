@@ -1,0 +1,43 @@
+
+name: Update Established Results Index
+
+on:
+  push:
+    paths:
+      - "public/established-results/samples/**"
+      - "scripts/generate-established-index.mjs"
+      - ".github/workflows/update-established-index.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  generate-index:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Generate index.json
+        run: node scripts/generate-established-index.mjs
+
+      - name: Commit updated index
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add public/established-results/index.json
+
+          if git diff --cached --quiet; then
+            echo "Index is already up to date."
+          else
+            git commit -m "Automatically update Established Results index"
+            git push
+          fi
