@@ -3,7 +3,7 @@
   "samples": [
     {
       "id": "sample-001",
-      "image": "samples/sample-001/image.jpg",
+      "image": "samples/sample-001/IMG_20261126_233251.jpg",
       "result": "samples/sample-001/result.json"
     }
   ]
