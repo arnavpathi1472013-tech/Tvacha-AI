@@ -1,0 +1,19 @@
+{
+  "id": "sample-001",
+  "title": "Example dermatologist-reviewed reference",
+  "referenceCondition": "Replace with the condition label approved by the reviewing dermatologist",
+  "observations": [
+    "Replace with an observation documented by the reviewer"
+  ],
+  "explanation": "Replace with the dermatologist-reviewed educational explanation for this reference image.",
+  "recommendations": [
+    "Replace with general educational guidance approved by the reviewer"
+  ],
+  "medicalAttention": "A person's symptoms and medical history require individual assessment by a qualified clinician.",
+  "disclaimer": "This record describes a dermatologist-reviewed reference image. It does not diagnose the person who uploaded a matching file. A qualified clinician must assess each individual.",
+  "review": {
+    "reviewerRole": "Dermatologist",
+    "reviewDate": "YYYY-MM-DD",
+    "source": "Replace with a description of the review source"
+  }
+}
