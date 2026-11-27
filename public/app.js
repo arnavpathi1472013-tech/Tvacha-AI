@@ -2,6 +2,7 @@ const $ = s => document.querySelector(s), OK = ['image/jpeg', 'image/png', 'imag
 let imgB64 = null;
 let selectedFile = null;
 let establishedRegistryPromise = null;
+let quota = null;
 
 const show = id => { document.querySelectorAll('.screen').forEach(s => s.hidden = s.id !== id); scrollTo(0, 0); };
 document.addEventListener('click', e => { const t = e.target.closest('[data-go]'); if (t && !t.disabled) show(t.dataset.go); });
@@ -93,6 +94,46 @@ function renderEstablishedResult(r) {
     b.append(sec('Review details', list(details)));
   }
 }
+
+// --- Daily usage counter (server-enforced; this only displays it) ---
+const fmtWait = ms => { const m = Math.max(1, Math.ceil(ms / 60000)), h = Math.floor(m / 60); return h ? h + ' h ' + (m % 60) + ' min' : m + ' min'; };
+function renderQuota() {
+  const n = $('#quotaLine');
+  if (!n) return;
+  if (!quota || quota.enabled === false || typeof quota.remaining !== 'number') { n.hidden = true; return; }
+  n.hidden = false;
+  n.classList.toggle('out', quota.remaining === 0);
+  n.textContent = quota.remaining > 0
+    ? quota.remaining + ' of ' + quota.limit + ' free AI analyses left today'
+    : 'No free analyses left. Resets in ' + fmtWait(quota.resetAt - Date.now()) + '.';
+}
+async function refreshQuota() {
+  try {
+    const r = await fetch('/api/quota', { cache: 'no-store' });
+    if (r.ok) { quota = await r.json(); renderQuota(); }
+  } catch { /* counter simply stays hidden */ }
+}
+const quotaSpent = () => quota && quota.remaining === 0 && quota.resetAt && quota.resetAt > Date.now();
+function renderLimit() {
+  const b = $('#reportBody');
+  b.replaceChildren();
+  const c = el('div', '', 'card quota-card');
+  const wait = quota && quota.resetAt ? fmtWait(quota.resetAt - Date.now()) : 'a while';
+  const up = el('button', 'Upgrade'); up.dataset.go = 'plans';
+  const lib = el('button', 'Educational library', 'alt'); lib.dataset.go = 'library';
+  const row = el('div', '', 'row'); row.append(up, lib);
+  c.append(
+    el('h2', 'Daily limit reached'),
+    el('p', "You've used all " + (quota && quota.limit ? quota.limit + ' ' : '') + 'free AI analyses for today. Come back in ' + wait + ', or upgrade for more.'),
+    el('p', 'If you have urgent symptoms, do not wait: seek medical care now (India: 112).', 'hint'),
+    row
+  );
+  b.append(c);
+}
+document.addEventListener('click', e => { if (e.target.closest('[data-plan]')) $('#planMsg').textContent = "Subscriptions aren't open yet. Thank you for your interest!"; });
+document.addEventListener('visibilitychange', () => { if (!document.hidden) refreshQuota(); });
+setInterval(() => { if (quota && quota.remaining === 0 && quota.resetAt && Date.now() >= quota.resetAt) refreshQuota(); else renderQuota(); }, 30000);
+refreshQuota();
 
 // --- Step 1: image ---
 $('#bCam').onclick = () => $('#cam').click();
@@ -195,6 +236,8 @@ async function analyse(ctx) {
       }
     }
 
+    if (quotaSpent()) { renderLimit(); show('report'); return; }
+
     if (!navigator.onLine) return show('offline');
 
     const stages = ['Examining image quality…', 'Analysing visible characteristics…', 'Considering supplied symptoms…', 'Preparing the assessment…'];
@@ -208,8 +251,15 @@ async function analyse(ctx) {
         headers: { 'content-type': 'application/json' },
         body: JSON.stringify({ image: imgB64, context: ctx, consent: true })
       });
+      if (r.status === 429) {
+        const e = await r.json().catch(() => ({}));
+        if (e.error === 'quota_exceeded') { quota = { enabled: true, limit: e.limit, remaining: 0, resetAt: e.resetAt }; renderQuota(); renderLimit(); return; }
+        if (e.error === 'rate_limited') { $('#reportBody').replaceChildren(el('div', 'Too many requests in a short time. Please wait a minute and try again.', 'card banner')); return; }
+        throw new Error();
+      }
       if (!r.ok) throw new Error();
       const data = await r.json();
+      if (data.quota) { quota = { enabled: true, ...data.quota }; renderQuota(); }
       if (!data.report?.overview?.summary || !Array.isArray(data.report.possibilities)) throw new Error();
       render(data);
     } catch {
