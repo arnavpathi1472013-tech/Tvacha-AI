@@ -17,6 +17,6 @@ export default {
     const context = {};
     for (const k of CTX) if (b.context?.[k]) context[k] = String(b.context[k]).slice(0, 500);
     try { return json(await analyze(b.image, context, env)); }
-    catch (e) { return json({ error: 'provider_error' }, 502); }
+    catch (e) { console.error('provider_error:', e.message); return json({ error: 'provider_error' }, 502); }
   },
 };
