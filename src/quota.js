@@ -18,6 +18,9 @@ export class Quota {
         if (!s.resetAt) s.resetAt = now + WINDOW_MS;
         await this.ctx.storage.put('s', s);
       }
+    } else if (url.pathname === '/reset') {
+      await this.ctx.storage.delete('s');
+      s = { used: 0, resetAt: null };
     } else if (url.pathname === '/refund') {
       if (s.used > 0) {
         s.used--;
