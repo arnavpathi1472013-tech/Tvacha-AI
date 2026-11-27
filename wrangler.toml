@@ -10,6 +10,7 @@ binding = "ASSETS"
 AI_PROVIDER = "openai-compatible"   # or "anthropic"
 AI_BASE_URL = "https://generativelanguage.googleapis.com/v1beta/openai"
 AI_MODEL = "gemini-3.5-flash-lite"
+DAILY_LIMIT = "100"
 
 [[ratelimits]]
 name = "ANALYZE_LIMITER"
