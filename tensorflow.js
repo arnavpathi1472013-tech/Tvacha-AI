@@ -1,4 +1,3 @@
-
 const EstablishedResults = (() => {
   const REGISTRY_URL = "/established-results/index.json";
   const MAX_IMAGE_BYTES = 8 * 1024 * 1024;
