@@ -18,7 +18,7 @@ const PROVIDERS = {
       body: JSON.stringify({ model: env.AI_MODEL, max_tokens: 2000, system: SYSTEM, messages: [{ role: 'user', content: [
         { type: 'image', source: { type: 'base64', media_type: 'image/jpeg', data: img } }, { type: 'text', text: userText(ctx) }] }] }),
     });
-    if (!r.ok) throw new Error('http ' + r.status);
+    if (!r.ok) throw new Error('http ' + r.status + ' ' + (await r.text()).slice(0, 300));
     return (await r.json()).content[0].text;
   },
   async 'openai-compatible'(img, ctx, env) {
@@ -29,7 +29,7 @@ const PROVIDERS = {
         { role: 'system', content: SYSTEM },
         { role: 'user', content: [{ type: 'image_url', image_url: { url: 'data:image/jpeg;base64,' + img } }, { type: 'text', text: userText(ctx) }] }] }),
     });
-    if (!r.ok) throw new Error('http ' + r.status);
+    if (!r.ok) throw new Error('http ' + r.status + ' ' + (await r.text()).slice(0, 300));
     return (await r.json()).choices[0].message.content;
   },
 };
