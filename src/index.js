@@ -10,6 +10,7 @@ function validate(b) {
 export default {
   async fetch(req, env) {
     const u = new URL(req.url);
+    if (u.pathname === '/api/health') return json({ hasKey: Boolean(env.AI_API_KEY), keyLength: env.AI_API_KEY ? env.AI_API_KEY.length : 0, provider: env.AI_PROVIDER, model: env.AI_MODEL });
     if (u.pathname !== '/api/analyze') return env.ASSETS.fetch(req);
     if (req.method !== 'POST') return json({ error: 'method_not_allowed' }, 405);
     let b; try { b = await req.json(); } catch { return json({ error: 'bad_json' }, 400); }
