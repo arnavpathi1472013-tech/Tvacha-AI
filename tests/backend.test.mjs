@@ -16,3 +16,31 @@ test('missing consent is rejected', async () => assert.equal((await call({ image
 test('non-base64 image is rejected', async () => assert.equal((await call({ image: '<x>', consent: true })).status, 400));
 test('oversized image is rejected', async () => assert.equal((await call({ image: 'A'.repeat(4e6 + 1), consent: true })).status, 400));
 test('valid request without key returns demo', async () => { const r = await call({ image: 'AAAA', consent: true }); assert.equal(r.status, 200); assert.equal((await r.json()).mode, 'demo'); });
+
+import { Quota } from '../src/quota.js';
+const fakeCtx = () => { const m = new Map(); return { storage: { get: async k => m.get(k), put: async (k, v) => m.set(k, v) } }; };
+const q = (o, path, limit = 2) => o.fetch(new Request(`https://quota/${path}?limit=${limit}`)).then(r => r.json());
+
+test('quota: consumes up to the limit then refuses', async () => {
+  const o = new Quota(fakeCtx());
+  assert.equal((await q(o, 'consume')).remaining, 1);
+  assert.equal((await q(o, 'consume')).remaining, 0);
+  const third = await q(o, 'consume');
+  assert.equal(third.ok, false);
+  assert.ok(third.resetAt > Date.now());
+});
+test('quota: refund gives an analysis back', async () => {
+  const o = new Quota(fakeCtx());
+  await q(o, 'consume'); await q(o, 'refund');
+  assert.equal((await q(o, 'status')).remaining, 2);
+});
+test('quota: /api/quota without a binding is disabled, not an error', async () => {
+  const r = await worker.fetch(new Request('https://x/api/quota'), { ASSETS: {} });
+  assert.deepEqual(await r.json(), { enabled: false });
+});
+test('quota: exhausted visitor gets 429 quota_exceeded', async () => {
+  const env = { ASSETS: {}, QUOTA: { idFromName: () => 'id', get: () => ({ fetch: async () => Response.json({ ok: false, limit: 10, remaining: 0, resetAt: Date.now() + 1000 }) }) } };
+  const r = await worker.fetch(new Request('https://x/api/analyze', { method: 'POST', body: JSON.stringify({ image: 'AAAA', consent: true }) }), env);
+  assert.equal(r.status, 429);
+  assert.equal((await r.json()).error, 'quota_exceeded');
+});
