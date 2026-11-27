@@ -1,4 +1,3 @@
-
 flowchart TD
     A([START]) --> B[Open TVACHA.AI]
     B --> C[Load Web Application]
