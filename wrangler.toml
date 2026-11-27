@@ -10,3 +10,19 @@ binding = "ASSETS"
 AI_PROVIDER = "openai-compatible"   # or "anthropic"
 AI_BASE_URL = "https://generativelanguage.googleapis.com/v1beta/openai"
 AI_MODEL = "gemini-3.5-flash-lite"
+
+[[ratelimits]]
+name = "ANALYZE_LIMITER"
+namespace_id = "1001"
+
+[ratelimits.simple]
+limit = 10
+period = 60
+
+[[durable_objects.bindings]]
+name = "QUOTA"
+class_name = "Quota"
+
+[[migrations]]
+tag = "v1"
+new_sqlite_classes = ["Quota"]
