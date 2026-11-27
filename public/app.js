@@ -70,20 +70,22 @@ async function matchEstablishedResult(file) {
   return null;
 }
 
+function pill(text, cls, note) {
+  const w = el('div', '', 'pill-row');
+  w.append(el('span', text, 'pill ' + cls));
+  if (note) w.append(el('p', note, 'pill-note'));
+  return w;
+}
 function renderEstablishedResult(r) {
   const b = $('#reportBody');
   b.replaceChildren();
-  b.append(el('div',
-    'ESTABLISHED REFERENCE MATCH — this is dermatologist-reviewed information attached to an identical reference image file. It is not a diagnosis of the uploaded person.',
-    'banner'
-  ));
+  b.append(pill('Established reference match', 'pill-green',
+    'This is dermatologist-reviewed information attached to an identical reference image file. It is not a diagnosis of the uploaded person.'));
   b.append(sec('Reference information', el('p', r.title)));
   if (r.referenceCondition) b.append(sec('Condition described in the reference', el('p', r.referenceCondition)));
   if (Array.isArray(r.observations) && r.observations.length)
     b.append(sec('Reference-image observations', list(r.observations)));
   b.append(sec('Dermatologist-reviewed explanation', el('p', r.explanation)));
-  if (Array.isArray(r.recommendations) && r.recommendations.length)
-    b.append(sec('General educational guidance', list(r.recommendations)));
   if (r.medicalAttention) b.append(sec('Medical attention', el('p', r.medicalAttention)));
   b.append(sec('Important limitation', el('p', r.disclaimer)));
   if (r.review?.reviewerRole || r.review?.reviewDate || r.review?.source) {
@@ -289,7 +291,7 @@ function render({ mode, report: r }) {
   const b = $('#reportBody');
   b.replaceChildren();
   if (mode === 'demo') b.append(el('div', 'DEMONSTRATION MODE: sample data, NOT real AI analysis of your photo.', 'banner emerg'));
-  b.append(el('div', 'AI-generated educational observations. Not a diagnosis.', 'banner'));
+  b.append(pill('AI-generated observations', 'pill-magenta', 'Not a diagnosis.'));
   b.append(sec('Assessment overview', el('p', r.overview.summary), list(r.overview.visible_features)));
   b.append(sec('Image observations', list(Object.entries(r.observations || {}).map(([k, v]) => k + ': ' + v))));
   b.append(sec('Possible conditions', ...r.possibilities.flatMap(p => [
@@ -321,5 +323,43 @@ function render({ mode, report: r }) {
   }
 })();
 
-setTimeout(() => !$('#splash').hidden && show(navigator.onLine ? 'home' : 'offline'), 2000);
+// --- Splash slideshow: shows whichever of these files exist, one by one ---
+(() => {
+  const bg = $('#splashBg'), slides = [];
+  let i = 0;
+  ['splash-1.jpg', 'splash-2.jpg', 'splash-3.jpg', 'splash-4.jpg', 'splash-5.jpg'].forEach(name => {
+    const im = new Image();
+    im.className = 'slide'; im.alt = ''; im.decoding = 'async';
+    im.onload = () => { bg.append(im); slides.push(im); if (slides.length === 1) im.classList.add('on'); };
+    im.src = '/images/' + name;
+  });
+  setInterval(() => {
+    if (slides.length < 2 || $('#splash').hidden || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    slides[i].classList.remove('on');
+    i = (i + 1) % slides.length;
+    slides[i].classList.add('on');
+  }, 5500);
+})();
+
+// --- Admin: reset my counter (open the site with #admin on the end of the address) ---
+$('#adminReset').onclick = async () => {
+  const msg = $('#adminMsg');
+  msg.textContent = 'Resetting…';
+  try {
+    const r = await fetch('/api/admin/reset', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ password: $('#adminPw').value }) });
+    const d = await r.json().catch(() => ({}));
+    if (r.ok) {
+      quota = { enabled: true, limit: d.limit, remaining: d.remaining, resetAt: d.resetAt };
+      renderQuota();
+      $('#adminPw').value = '';
+      msg.textContent = 'Done. ' + d.remaining + ' of ' + d.limit + ' analyses available.';
+    } else {
+      msg.textContent = { 403: 'Wrong password.', 404: 'Admin reset is not enabled on this server.', 429: 'Too many attempts. Wait a minute.' }[r.status] || 'Could not reset.';
+    }
+  } catch { msg.textContent = 'Network error.'; }
+};
+const routeHash = () => { if (location.hash === '#admin') show('admin'); };
+addEventListener('hashchange', routeHash);
+routeHash();
+
 if ('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js');
