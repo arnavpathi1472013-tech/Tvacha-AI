@@ -65,6 +65,7 @@
       <section class="screen" id="capture" hidden>
         <p class="step"><span>Step 1 of 2</span><i class="bar"><b style="width:50%"></b></i></p>
         <h2>Photograph the area</h2>
+        <p id="quotaLine" class="quota" role="status" hidden></p>
         <div class="card drop"><input id="cam" type="file" accept="image/*" capture="environment" hidden><input id="gal" type="file" accept="image/jpeg,image/png,image/webp" hidden>
           <svg class="drop-icon" viewBox="0 0 48 48" aria-hidden="true"><rect x="6" y="12" width="36" height="26" rx="6" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="24" cy="25" r="7" fill="none" stroke="currentColor" stroke-width="2"/><path d="M17 12l3-5h8l3 5" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
           <p class="hint">Use natural light, avoid filters, and keep the area centred.</p>
@@ -136,16 +137,44 @@
         <div class="card">
           <p>TVACHA AI is a professional skin analysis AI.</p>
           <p>Photos are resized in your browser, sent over HTTPS for one analysis, and never saved by this app or cached offline. No analytics are used.</p>
+          <p>To keep the free service fair, a daily usage counter is kept against a one-way hash of your network address. It does not include your photo or answers.</p>
         </div>
         <div class="card">
           <h3>Created by</h3>
           <p><b>Arnav Pathi</b> (अर्णव पाठी)<br>© 2026 Arnav Pathi. All rights reserved.<br>Built for the RSBVP school science exhibition.</p>
         </div><button class="alt back" data-go="home">← Back</button>
       </section>
+      <section class="screen" id="plans" hidden>
+        <p class="eyebrow">Plans</p>
+        <h2>Upgrade Tvacha AI</h2>
+        <p class="banner">Paid plans are not open yet. This is a preview of what is planned.</p>
+        <div class="plans">
+          <div class="card plan">
+            <h3>Free</h3>
+            <p class="price">₹0</p>
+            <ul><li>10 AI analyses per day</li><li>Educational library</li><li>Dermatologist-reviewed reference matches</li></ul>
+            <button class="alt" disabled>Current plan</button>
+          </div>
+          <div class="card plan featured">
+            <h3>Plus</h3>
+            <p class="price">₹99<small> / month</small></p>
+            <ul><li>50 AI analyses per day</li><li>Everything in Free</li><li>Priority analysis</li></ul>
+            <button data-plan="plus">Subscribe</button>
+          </div>
+          <div class="card plan">
+            <h3>Pro</h3>
+            <p class="price">₹249<small> / month</small></p>
+            <ul><li>200 AI analyses per day</li><li>Everything in Plus</li><li>Early access to new features</li></ul>
+            <button data-plan="pro">Subscribe</button>
+          </div>
+        </div>
+        <p id="planMsg" class="hint" role="status"></p>
+        <button class="alt back" data-go="home">← Back</button>
+      </section>
       <section class="screen" id="offline" hidden>
         <h2>You're offline</h2>
         <div class="card">
-          <p>Live AI image analysis needs internet. Nothing was sent and no result was simulated.</p><div class="row"><button data-go="context">Back to my answers</button><button class="alt" data-go="library">Educational library</button><button class="alt" data-go="home">Home</button></div>
+          <p>Live AI image analysis needs internet. Nothing was sent and no result was found.</p><div class="row"><button data-go="context">Back to my answers</button><button class="alt" data-go="library">Educational library</button><button class="alt" data-go="home">Home</button></div>
         </div>
         <div class="card banner emerg">
           <h3>Seek urgent medical care for:</h3>
