@@ -529,3 +529,29 @@ input[type="checkbox"] { width: 20px; height: 20px; flex: none; accent-color: va
 @media (prefers-reduced-motion: reduce) {
   *, ::before, ::after { animation: none !important; transition: none !important; }
 }
+
+/* ---------- usage counter & plans ---------- */
+.quota {
+  display: inline-block;
+  margin: 0 0 14px;
+  padding: 6px 14px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--paper);
+  color: var(--ink2);
+  font-size: 0.92rem;
+}
+.quota.out { border-color: var(--clay); background: var(--blush); color: var(--clay-d); }
+.quota-card h2 { margin-top: 0; }
+.plans {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 14px;
+  margin: 16px 0;
+}
+.plan { display: flex; flex-direction: column; gap: 6px; margin: 0; }
+.plan h3 { margin: 0; }
+.plan .price { margin: 4px 0; font: 600 1.9rem/1.2 var(--serif); }
+.plan .price small { font: 500 0.9rem var(--sans); color: var(--ink2); }
+.plan ul { flex: 1; margin: 6px 0 14px; padding-left: 1.1em; color: var(--ink2); }
+.plan.featured { border-color: var(--clay); box-shadow: 0 6px 22px #b5694a22; }
