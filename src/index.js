@@ -19,6 +19,13 @@ async function quotaCall(req, env, action) {
   const limit = Number(env.DAILY_LIMIT) || DEFAULT_DAILY_LIMIT;
   return (await stub.fetch(`https://quota/${action}?limit=${limit}`)).json();
 }
+async function safeEqual(a, b) {
+  const enc = new TextEncoder();
+  const [x, y] = await Promise.all([a, b].map(async v => new Uint8Array(await crypto.subtle.digest('SHA-256', enc.encode(v)))));
+  let d = 0;
+  for (let i = 0; i < x.length; i++) d |= x[i] ^ y[i];
+  return d === 0;
+}
 const pub = q => ({ limit: q.limit, remaining: q.remaining, resetAt: q.resetAt });
 export default {
   async fetch(req, env) {
@@ -28,6 +35,18 @@ export default {
       if (!env.QUOTA) return json({ enabled: false });
       try { return json({ enabled: true, ...pub(await quotaCall(req, env, 'status')) }); }
       catch (e) { console.error('quota_status_error:', e.message); return json({ enabled: false }); }
+    }
+    if (u.pathname === '/api/admin/reset') {
+      if (req.method !== 'POST') return json({ error: 'method_not_allowed' }, 405);
+      if (!env.ADMIN_PASSWORD || !env.QUOTA) return json({ error: 'not_enabled' }, 404);
+      if (env.ANALYZE_LIMITER) {
+        const { success } = await env.ANALYZE_LIMITER.limit({ key: 'admin:' + (req.headers.get('CF-Connecting-IP') || 'unknown') });
+        if (!success) return json({ error: 'rate_limited' }, 429);
+      }
+      let b; try { b = await req.json(); } catch { return json({ error: 'bad_json' }, 400); }
+      if (!(await safeEqual(String(b?.password ?? ''), String(env.ADMIN_PASSWORD)))) return json({ error: 'forbidden' }, 403);
+      try { return json({ ok: true, ...pub(await quotaCall(req, env, 'reset')) }); }
+      catch (e) { console.error('quota_reset_error:', e.message); return json({ error: 'reset_failed' }, 500); }
     }
     if (u.pathname !== '/api/analyze') return env.ASSETS.fetch(req);
     if (req.method !== 'POST') return json({ error: 'method_not_allowed' }, 405);
