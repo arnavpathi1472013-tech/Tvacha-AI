@@ -95,8 +95,8 @@ button.link {
 }
 button.link:hover { background: var(--blush); color: var(--ink); }
 .mark {
-  display: grid;
-  place-items: center;
+  position: relative;
+  display: block;
   width: 36px;
   height: 36px;
   border-radius: 50% 50% 46% 54% / 55% 45% 55% 45%;
@@ -110,6 +110,17 @@ button.link:hover { background: var(--blush); color: var(--ink); }
   height: 112px;
   border-width: 4px;
   animation: breathe 5s ease-in-out infinite;
+}
+
+.mark img {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center center;
 }
 
 @keyframes breathe {
