@@ -1,0 +1,27 @@
+
+{
+  "id": "sample-melanoma",
+  "title": "Melanoma",
+  "referenceCondition": "Melanoma",
+  "explanation": "Melanoma is a type of skin cancer that develops from melanocytes, the cells responsible for producing skin pigment. It may develop in an existing mole or appear as a new, unusual pigmented spot. Early recognition and professional medical assessment are important. Visual appearance alone cannot confirm melanoma; diagnosis requires evaluation by a qualified medical professional and may require a skin biopsy.",
+  "observations": [
+    "Asymmetry: One half of the spot may look different from the other half.",
+    "Border irregularity: The edges may appear uneven, notched, scalloped, or poorly defined.",
+    "Color variation: The lesion may contain multiple shades, including brown, black, tan, red, white, or blue.",
+    "Diameter: Melanomas are often larger than 6 mm when detected, but they can also be smaller.",
+    "Evolution: The spot may change in size, shape, color, elevation, or appearance over time.",
+    "Additional warning signs may include itching, tenderness, bleeding, or a sore that does not heal.",
+    "Some melanomas may appear beneath a fingernail or toenail, or on the palms or soles."
+  ],
+  "recommendations": [
+    "Arrange an assessment with a qualified dermatologist as soon as possible if a new or changing suspicious spot is noticed.",
+    "Seek immediate help from a dermatologist.",
+    "Do not attempt to remove, scrape, or treat a suspicious lesion yourself.",
+    "Protect yourself from sunlight and avoid applying anything on the lesions",
+    "If appropriate, keep a dated photograph for comparison and share it with the healthcare professional.",
+    "Follow the dermatologist's advice regarding examination, dermoscopy, biopsy, or further testing."
+  ],
+  "medicalAttention": "Prompt professional assessment is recommended for any new, changing, unusual, itchy, bleeding, or non-healing pigmented lesion. Do not wait for a lesion to become larger than 6 mm before seeking medical advice.",
+  "review": "dermatologist_verified",
+  "disclaimer": "Do not try any medication or treatment on the lesion."
+}
