@@ -97,8 +97,8 @@ button.link:hover { background: var(--blush); color: var(--ink); }
 .mark {
   position: relative;
   display: block;
-  width: 36px;
-  height: 36px;
+  width: 72px;
+  height: 72px;
   border-radius: 50% 50% 46% 54% / 55% 45% 55% 45%;
   background: transparent;
   border: 2px solid var(--clay);
