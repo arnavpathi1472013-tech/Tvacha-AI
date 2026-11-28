@@ -97,18 +97,21 @@ button.link:hover { background: var(--blush); color: var(--ink); }
 .mark {
   display: grid;
   place-items: center;
-  width: 40px;
-  height: 40px;
+  width: 36px;
+  height: 36px;
   border-radius: 50% 50% 46% 54% / 55% 45% 55% 45%;
-  background: var(--clay);
-  color: var(--paper);
-  font: 1.05rem/1 var(--deva);
+  background: transparent;
+  border: 2px solid var(--clay);
+  overflow: hidden;
 }
+
 .mark.big {
-  width: 224px;
-  height: 224px;
+  width: 112px;
+  height: 112px;
+  border-width: 4px;
   animation: breathe 5s ease-in-out infinite;
 }
+
 @keyframes breathe {
   50% { border-radius: 54% 46% 52% 48% / 46% 54% 46% 54%; transform: scale(1.03); }
 }
