@@ -327,7 +327,7 @@ function render({ mode, report: r }) {
 (() => {
   const bg = $('#splashBg'), slides = [];
   let i = 0;
-  ['splash1.jpg', 'splash2.jpg', 'splash3.jpg', 'splash4.jpg', 'splash5.jpg'].forEach(name => {
+  ['splash1.jpg', 'splash2.jpg', 'splash3.jpg', 'splash4.jpg', 'splash5.JPG'].forEach(name => {
     const im = new Image();
     im.className = 'slide'; im.alt = ''; im.decoding = 'async';
     im.onload = () => { bg.append(im); slides.push(im); if (slides.length === 1) im.classList.add('on'); };
